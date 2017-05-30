@@ -84,6 +84,18 @@ prompt_context() {
   fi
 }
 
+prompt_docker_machine() {
+  if [[ $DOCKER_MACHINE_NAME != "" ]]; then
+    if [[ $DOCKER_MACHINE_NAME =~ "prod" ]]; then
+      prompt_segment red default "%(!.%{%F{yellow}%}.)$DOCKER_MACHINE_NAME"
+    elif [[ $DOCKER_MACHINE_NAME =~ "pdx" ]]; then
+      prompt_segment yellow default "%(!.%{%F{yellow}%}.)$DOCKER_MACHINE_NAME"
+    else
+      prompt_segment white default "$DOCKER_MACHINE_NAME"
+    fi
+  fi
+}
+
 # Git: branch/detached head, dirty status
 prompt_git() {
   (( $+commands[git] )) || return
@@ -228,6 +240,7 @@ build_prompt() {
   prompt_status
   prompt_virtualenv
   prompt_context
+  prompt_docker_machine
   prompt_dir
   prompt_git
   prompt_bzr
