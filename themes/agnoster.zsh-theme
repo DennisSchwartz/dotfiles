@@ -84,18 +84,6 @@ prompt_context() {
   fi
 }
 
-prompt_docker_machine() {
-  if [[ $DOCKER_MACHINE_NAME != "" ]]; then
-    if [[ $DOCKER_MACHINE_NAME =~ "prod" ]]; then
-      prompt_segment red default "%(!.%{%F{yellow}%}.)$DOCKER_MACHINE_NAME"
-    elif [[ $DOCKER_MACHINE_NAME =~ "pdx" ]]; then
-      prompt_segment yellow default "%(!.%{%F{yellow}%}.)$DOCKER_MACHINE_NAME"
-    else
-      prompt_segment white default "$DOCKER_MACHINE_NAME"
-    fi
-  fi
-}
-
 # Git: branch/detached head, dirty status
 prompt_git() {
   (( $+commands[git] )) || return
@@ -220,6 +208,24 @@ prompt_virtualenv() {
   fi
 }
 
+prompt_kubecontext() {
+  if [[ $(kubectl config current-context) == *"testing"* ]]; then
+    prompt_segment green black "(`kubectl config current-context`)"
+  elif [[ $(kubectl config current-context) == *"staging"* ]]; then
+    prompt_segment yellow black "staging"
+  elif [[ $(kubectl config current-context) == *"production"* ]]; then
+    prompt_segment red yellow "production"
+  fi
+}
+
+prompt_namespace() {
+  if [[ $(kubectl config view | grep namespace:) == *"default"* ]]; then
+    prompt_segment black red "core"
+  elif [[ $(kubectl config view | grep namespace:) == *"pdx"* ]]; then
+    prompt_segment black green "pdx"
+  fi
+}
+
 # Status:
 # - was there an error
 # - am I root
@@ -240,7 +246,8 @@ build_prompt() {
   prompt_status
   prompt_virtualenv
   prompt_context
-  prompt_docker_machine
+  prompt_namespace
+  prompt_kubecontext
   prompt_dir
   prompt_git
   prompt_bzr
