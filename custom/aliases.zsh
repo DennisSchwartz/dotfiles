@@ -1,0 +1,5 @@
+alias dcu="docker-compose up"
+alias dc="docker-compose"
+alias ds="docker service"
+alias d="docker"
+alias k="kubectl"
