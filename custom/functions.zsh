@@ -1,8 +1,10 @@
 function context() {
-  if [[ "$1" == "pdx" ]]; then
-    kubectl config set-context k8s-staging.repositive.io --namespace=pdx
-  elif [[ "$1" == "staging" ]]; then
-    kubectl config set-context k8s-staging.repositive.io --namespace=default
+  if [[ "$1" == "pdx-staging" ]]; then
+    kubectl config use-context k8s-staging.repositive.io --namespace=pdx
+  elif [[ "$1" == "pdx-production" ]]; then
+    kubectl config use-context gke_repositive-190911_us-east1-c_pdx-production --namespace=pdx
+  elif [[ "$1" == "core-staging" ]]; then
+    kubectl config use-context k8s-staging.repositive.io --namespace=default
   else
     echo "Not a valid context/namespace!"
   fi
