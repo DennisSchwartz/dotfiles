@@ -1,10 +1,16 @@
 function context() {
-  if [[ "$1" == "pdx-staging" ]]; then
-    kubectl config use-context k8s-staging.repositive.io --namespace=pdx
-  elif [[ "$1" == "pdx-production" ]]; then
-    kubectl config use-context gke_repositive-190911_us-east1-c_pdx-production --namespace=pdx
-  elif [[ "$1" == "core-staging" ]]; then
-    kubectl config use-context k8s-staging.repositive.io --namespace=default
+  if [[ "$1" == "cmp-dev" ]]; then
+    kubectl config set-context gke_repositive-190911_us-east1-c_dev --namespace=cmp
+    kubectl config use-context gke_repositive-190911_us-east1-c_dev
+  elif [[ "$1" == "cmp-demo" ]]; then
+    kubectl config set-context gke_repositive-190911_us-east1-c_dev --namespace=demo
+    kubectl config use-context gke_repositive-190911_us-east1-c_dev
+  elif [[ "$1" == "discover-staging" ]]; then
+    kubectl config set-context k8s-staging.repositive.io --namespace=nih
+    kubectl config use-context k8s-staging.repositive.io
+  elif [[ "$1" == "mini" ]]; then
+    kubectl config set-context minikube --namespace=demo
+    kubectl config use-context minikube
   else
     echo "Not a valid context/namespace!"
   fi

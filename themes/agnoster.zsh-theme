@@ -209,10 +209,12 @@ prompt_virtualenv() {
 }
 
 prompt_kubecontext() {
-  if [[ $(kubectl config current-context) == *"testing"* ]]; then
-    prompt_segment green black "(`kubectl config current-context`)"
-  elif [[ $(kubectl config current-context) == *"staging"* ]]; then
-    prompt_segment yellow black "staging"
+  if [[ $(kubectl config current-context) == *"minikube"* ]]; then
+    prompt_segment green black "minikube"
+  elif [[ $(kubectl config current-context) == *"dev"* ]] && [[ $(k config view --minify | grep namespace) == *"demo"* ]]; then
+    prompt_segment yellow black "cmp-demo"
+  elif [[ $(kubectl config current-context) == *"dev"* ]] && [[ $(k config view --minify | grep namespace) == *"cmp"* ]]; then
+    prompt_segment yellow black "cmp-dev"
   elif [[ $(kubectl config current-context) == *"production"* ]]; then
     prompt_segment red yellow "production"
   fi
