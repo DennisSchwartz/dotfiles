@@ -215,6 +215,10 @@ prompt_kubecontext() {
     prompt_segment yellow black "cmp-demo"
   elif [[ $(kubectl config current-context) == *"dev"* ]] && [[ $(k config view --minify | grep namespace) == *"cmp"* ]]; then
     prompt_segment yellow black "cmp-dev"
+  elif [[ $(kubectl config current-context) == *"discover-dev"* ]] && [[ $(k config view --minify | grep namespace) == *"discover"* ]]; then
+    prompt_segment yellow black "discover dev"
+  elif [[ $(kubectl config current-context) == *"discover"* ]] && [[ $(k config view --minify | grep namespace) == *"discover"* ]]; then
+    prompt_segment red yellow "discover prod"
   elif [[ $(kubectl config current-context) == *"production"* ]]; then
     prompt_segment red yellow "production"
   fi
