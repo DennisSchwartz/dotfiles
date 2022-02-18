@@ -209,26 +209,30 @@ prompt_virtualenv() {
 }
 
 prompt_kubecontext() {
-  if [[ $(kubectl config current-context) == *"minikube"* ]]; then
+  local context
+  local namespace
+  context=$(kubectl config current-context)
+  namespace=$(k config view --minify | grep namespace:)
+  if [[ context == *"minikube"* ]]; then
     prompt_segment green black "minikube"
-  elif [[ $(kubectl config current-context) == *"dev"* ]] && [[ $(k config view --minify | grep namespace) == *"demo"* ]]; then
-    prompt_segment yellow black "cmp-demo"
-  elif [[ $(kubectl config current-context) == *"dev"* ]] && [[ $(k config view --minify | grep namespace) == *"cmp"* ]]; then
-    prompt_segment yellow black "cmp-dev"
-  elif [[ $(kubectl config current-context) == *"discover-dev"* ]] && [[ $(k config view --minify | grep namespace) == *"discover"* ]]; then
-    prompt_segment yellow black "discover dev"
-  elif [[ $(kubectl config current-context) == *"discover"* ]] && [[ $(k config view --minify | grep namespace) == *"discover"* ]]; then
-    prompt_segment red yellow "discover prod"
-  elif [[ $(kubectl config current-context) == *"production"* ]]; then
-    prompt_segment red yellow "production"
-  fi
-}
-
-prompt_namespace() {
-  if [[ $(kubectl config view | grep namespace:) == *"default"* ]]; then
-    prompt_segment black red "core"
-  elif [[ $(kubectl config view | grep namespace:) == *"pdx"* ]]; then
-    prompt_segment black green "pdx"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"dev-tidata"* ]]; then
+    prompt_segment yellow black "dev-tidata"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"prd-tidata"* ]]; then
+    prompt_segment red black "prd-tidata"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"dev-feature-store"* ]]; then
+    prompt_segment yellow black "dev-fs"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"stg-feature-store"* ]]; then
+    prompt_segment yellow black "stg-fs"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"prd-feature-store"* ]]; then
+    prompt_segment red black "prd-fs"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"dev-bai-metadata"* ]]; then
+    prompt_segment yellow black "dev-bmd"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"stg-bai-metadata"* ]]; then
+    prompt_segment yellow black "stg-bmd"
+  elif [[ $context == *"volta"* ]] && [[ $namespace == *"prd-bai-metadata"* ]]; then
+    prompt_segment red black "prd-bmd"
+  elif [[ $context == *"az-stg"* ]] && [[ $namespace == *"data"* ]]; then
+    prompt_segment yellow black "az-stg-data"
   fi
 }
 
@@ -251,9 +255,8 @@ build_prompt() {
   RETVAL=$?
   prompt_status
   prompt_virtualenv
-  prompt_context
-  prompt_namespace
   prompt_kubecontext
+  prompt_context
   prompt_dir
   prompt_git
   prompt_bzr

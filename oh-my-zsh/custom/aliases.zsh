@@ -4,7 +4,10 @@ alias ds="docker service"
 alias d="docker"
 alias k="kubectl"
 alias kgp="kubectl get po"
-
-alias drun='docker run -it --network=host --rm -v $(pwd):/opt/work --workdir=/opt/work'
-alias hidefiles='defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder'
-alias showfiles=‘defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder’
+alias gls="gsutil ls"
+alias minio="aws s3 --profile minio"
+alias kfs="kubectl -n feature-store"
+alias kgpfs="kubectl -n feature-store get po"
+alias kfsgp="kubectl -n feature-store get po"
+alias kta="kubectl -n target-assessment"
+alias ktagp="kubectl -n target-assessment get po"
